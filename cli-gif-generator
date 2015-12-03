@@ -1,0 +1,55 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler'
+Bundler.setup(:default)
+require 'RMagick'
+
+unless ARGV[0]
+  puts 'Need to specify a file to read in as command input and output.'
+  exit(1)
+end
+include Magick
+
+FONT_SIZE = 16
+FONT_FAMILY = 'Consolas'
+LINE_HEIGHT = 1.2 * FONT_SIZE
+
+def image_with_text(width, height, text)
+  img = Image.new(width, height) do
+    self.background_color = 'black'
+  end
+  img.delay = (rand()*20)
+  txt = Draw.new
+  txt.font_family = FONT_FAMILY
+  txt.pointsize = FONT_SIZE
+  txt.fill = '#ffffff'
+  txt.text_antialias = true
+  txt.font_weight = 400
+  txt.gravity = Magick::NorthWestGravity
+  img.annotate(txt, 0,0,10,10, text)
+end
+
+output = File.read(ARGV[0])
+command = output.match(%r{^\$ (.*)})[1]
+response = output.lines[1..-1].join
+height = ((output.lines.size + 2) * LINE_HEIGHT).to_i
+width = output.lines.map{|l| l.size }.max * 10
+
+gif = ImageList.new
+
+typed = '$ '
+command.each_char do |c|
+  typed << c
+  gif << image_with_text(width, height, typed)
+end
+
+img = image_with_text(width, height, typed)
+img.delay = 150
+gif << img
+
+
+img = image_with_text(width, height, [typed,response].join("\n\n"))
+img.delay = 600
+gif << img
+gif.write(ARGV[0].sub(/\..*?$/, '.gif'))
