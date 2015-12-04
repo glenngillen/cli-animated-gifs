@@ -1,6 +1,6 @@
 # CLI animated GIF generator
 
-Quickly create an animated GIF of a CLI command and it's resulting output.
+Quickly create an animated GIF of a CLI command and its resulting output.
 
 ## Usage
 
