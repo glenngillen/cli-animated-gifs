@@ -26,3 +26,14 @@ that filename into `cli-gif-generator` as the only argument, e.g.:
 And the result would look like:
 
 ![CLI animated GIF example](http://a.gln.io/AHR6rvvSbs.gif)
+
+## Dependencies
+
+* Ruby
+* RMagick (handled by `bundler`/`Gemfile`)
+* ImageMagick (`brew install imagemagick`)
+* Ghostscript (`brew install ghostscript`)
+* Consolas font, setup to work with Ghostscript (I got it working by
+following [these instructions](http://www.imagemagick.org/discourse-server/viewtopic.php?t=20529).
+Alternatively [change the value of `FONT_FAMILY`](https://github.com/glenngillen/cli-animated-gifs/blob/master/cli-gif-generator#L15)
+to something your system/Ghostscript supports natively)
